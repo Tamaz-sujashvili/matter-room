@@ -2,7 +2,7 @@
 title: Cap table — post-money math at the $8M cap
 source_url: none
 ingested: 2026-11-18
-sha256: PENDING
+sha256: 399e34cfae8f99f23442c6079afaa8474cd43408eb5ba9ba830c7947665202a9
 note: Constructed. Simple. Used by Reviewer A for money math.
 ---
 
@@ -20,14 +20,14 @@ note: Constructed. Simple. Used by Reviewer A for money math.
 
 ## Meridian Safe, if it converted today at the cap
 
-[[post-money-math]]
+### Post-money math
 
 - Purchase Amount: $400,000
 - Post-Money Valuation Cap: $8,000,000
 - Implied ownership at the cap: $400,000 / $8,000,000 = **5.00%**
 - Safe Price uses Company Capitalization as defined in the Safe (includes Unissued Option Pool; excludes this Safe and other Safes and convertible notes)
 
-[[option-pool]]
+### Option pool
 
 - Unissued Option Pool in the table above: 2,000,000 shares (20% of outstanding)
 - The Safe’s Company Capitalization **includes** the Unissued Option Pool

@@ -4,7 +4,7 @@ from: Dana Okafor <dana.okafor@pryorlyle.example>
 to: Elena Marsh <elena@halden.example>
 date: 2026-11-13
 ingested: 2026-11-18
-sha256: PENDING
+sha256: 53c8069bccb196075c31f3bf1cfb6a36964be632d3dd49ce1be9600aa70821b8
 note: Constructed email. This is the contested pro rata promise.
 ---
 

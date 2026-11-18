@@ -2,7 +2,7 @@
 title: Meridian Side Letter (draft)
 source_url: none
 ingested: 2026-11-18
-sha256: PENDING
+sha256: d99148d29690a18599df6c287e38ccf6cb86313fe0cbe6027fbebc38a722058c
 note: Constructed document for the Halden matter. Draft dated 16 Nov 2026. Not executed.
 ---
 

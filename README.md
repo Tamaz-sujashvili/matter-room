@@ -1,16 +1,48 @@
 # Matter Room
 
-Turn a contract bundle into a matter file AutoClaw can actually work: evidence
-wiki, fact timeline, evidence index, four-reviewer council memo, and a
-side-letter redline.
+Turn a contract bundle into a matter file an agent can work: evidence wiki, fact
+timeline, evidence index, four-reviewer council memo, and a side-letter redline.
 
-Reverse-engineered from [create-wiki](https://github.com/Tamaz-sujashvili/create-wiki)
-and [llm-council-skill](https://github.com/Tamaz-sujashvili/llm-council-skill).
-The council runs **inside the agent** — no Node app, no OpenRouter key.
+Built for **Built with AutoClaw — Round 3**, Legal Practice track. Reverse-engineered
+from [create-wiki](https://github.com/Tamaz-sujashvili/create-wiki) and
+[llm-council-skill](https://github.com/Tamaz-sujashvili/llm-council-skill). The
+council runs **inside the agent** — no Node app, no OpenRouter key, no second model
+stack.
 
-Built for **Built with AutoClaw — Round 3**, Legal Practice track.
-The example matter (`examples/halden-safe/`) is **constructed and fictional**.
-Company names, people, emails, and amounts are invented so nothing real leaks.
+**The demo is the example matter: [`examples/halden-safe/`](examples/halden-safe/).**
+Open that folder and you see the whole method run end to end — 8 sources, 13 wiki
+pages, 4 reviewer seats, 5 deliverables, 0 lint issues.
+
+## What the Halden run produced
+
+Halden Analytics (fictional, Delaware) signed a $400k YC Post-Money Safe at an $8M
+cap. Eleven days later counsel sent an unexecuted side letter adding pro rata,
+monthly reporting, and an MFN. Close is Monday. Four emails contradict the paper.
+
+The run's findings, all cited to a file and a section:
+
+- **Nothing binds the founder today but the Safe.** The term sheet is non-binding
+  and the Safe supersedes every prior understanding. A signed side letter *will*
+  bind her, and override the Safe wherever it says it controls — which is why the
+  redline, not the memo, is the deliverable that matters.
+- **The SAFE's entire-agreement clause is temporal.** §6.2 reaches agreements made
+  *before* it, so it kills the term sheet and the 6 November call — not a letter
+  signed ten days later. The draft's own §5.2 ("this Side Letter shall control") is
+  the real overreach, and it is the first thing to delete.
+- **The MFN is the only clause that can move the price.** As drafted it reaches
+  convertible notes, so a $250k bridge at a lower cap resets Meridian's cap
+  automatically, with no notice and no election.
+- **5.00% is not 4.76%.** Purchase Amount ÷ Cap gives the headline; the shares
+  actually issued are 500,000 on a 10.5M post-conversion base. The pool sits inside
+  Company Capitalization. No redline fixes that — it is what the definitions say.
+- **Ten changes to the side letter, none to the Safe.** A market-standard form is
+  issue-spotted, not redlined.
+
+And one thing the agent got wrong: it read counsel's MFN offer as a concession when
+the text says "we'll consider it — I'm not promising we'll agree". `verification_log.md`
+row 8 records the correction, and the memo shows it. Seven of eight sampled claims
+held. The sign-off block in that log is **blank on purpose** — the human step is the
+part that makes the log worth publishing.
 
 ## Why not a chatbot
 
@@ -18,9 +50,9 @@ Company names, people, emails, and amounts are invented so nothing real leaks.
 |---|---|
 | Re-reads the contract every question | Compiles once into a wiki with `[[wikilinks]]` |
 | Claims without locators | Every claim cites `[[raw/file.md#section]]` |
-| Silent about conflicts | `contested: true` + two sources |
-| One model, one opinion | Four reviewer seats, anonymized ranking, chairman keeps disagreements |
-| "Trust me" | `verification_log.md` the human fills by hand |
+| Silently picks a winner in a conflict | `contested: true` + two sources + both readings |
+| One model, one opinion | Four seats, anonymized ranking, chairman keeps disagreements |
+| "Trust me" | `verification_log.md` a human fills and initials |
 | Redlines the market-standard form | Issue-spots the SAFE, redlines the side letter |
 
 ## Quick start
@@ -28,49 +60,67 @@ Company names, people, emails, and amounts are invented so nothing real leaks.
 ```bash
 git clone https://github.com/Tamaz-sujashvili/matter-room.git
 cd matter-room
-./scripts/install.sh            # prints AutoClaw instructions; or: install.sh claude|cursor|codex|hermes
+./scripts/install.sh            # prints AutoClaw instructions; or claude|cursor|codex|hermes
 ```
 
 Then in AutoClaw Legal Assistant (or Cursor / Claude Code / Codex / Hermes):
 
-1. Attach or open `examples/halden-safe/` (or a new empty matter folder)
+1. Attach or open `examples/halden-safe/` — or a new empty matter folder
 2. Point the agent at `SKILL.md` and say: **"Run Matter Room on this matter."**
-3. After the draft deliverables exist, fill `verification_log.md` yourself.
+3. When the draft deliverables exist, fill in `verification_log.md` yourself
 
-## The five deliverables
+## What is in the repo
 
-| File | What it is |
-|---|---|
-| `research_memo.md` | Issue → cited facts → assessment → action. Council disagreements kept. |
-| `redline.md` | Negotiated document only. Every change footnoted. |
-| `fact_timeline.md` | Dated rows, each cited. Contested dates marked. |
-| `evidence_index.md` | Every raw file: SHA256, what it supports, what it contradicts. |
-| `verification_log.md` | Eight sampled claims, human verdicts. |
+```
+SKILL.md              the instruction pack the agent reads
+prompts/              risk rank, four reviewer seats, chairman, verify
+templates/            SCHEMA, index, log, and the five deliverable shells
+scripts/
+  install.sh          copy the pack next to your agent
+  lint_matter.py      the source-check artifact (4 legal checks)
+  stamp_sources.py    SHA256 of every raw body, into frontmatter
+examples/halden-safe/ the finished matter: raw/, entities/, concepts/,
+                      comparisons/, queries/, council/, deliverables/
+```
 
-Lint is the source-check artifact:
+## Lint is the "sources were checked" artifact
 
 ```bash
 python3 scripts/lint_matter.py examples/halden-safe
+# OK — no issues found
 ```
 
-## The Halden matter (example)
+Beyond broken links, orphans, index completeness, frontmatter and SHA drift, four
+legal checks run:
 
-Pre-close SAFE review. Close is Monday 23 Nov 2026.
+1. `uncited-high-risk` — a `risk: high` page with no `[[raw/...]]` in the body
+2. `contested-unpaired` — `contested: true` with fewer than two sources
+3. `deliverable-backlink` — a deliverable missing from `index.md`
+4. `bad-anchor` — `[[raw/x.md#anchor]]` where the heading does not exist
 
-- **Halden Analytics, Inc.** (Delaware) — founder company
-- **Meridian Ventures I, L.P.** — $400,000 on a YC Post-Money SAFE, $8M cap, no discount
-- Side letter adds pro rata, information rights, and MFN
-- Four emails contradict the paper on all three adds
-- SAFE has an entire-agreement clause
+Check 4 failed on its first run against this very matter: two anchors the pack
+recommended did not exist in the source. That is in `log.md`, with both hashes.
 
-Live question: what does the founder actually owe, and what gets redlined in the
-side letter before Monday?
+SHA256 is stamped on every raw body. Edit a source after ingest and lint fails —
+which is how you show nobody quietly changed the paper.
+
+## The method in one paragraph
+
+Two layers. **L1** is the immutable source set, hashed. **L2** is a wiki the agent
+compiles once: parties, instruments, contested facts, comparisons, each page carrying
+frontmatter, tags from a closed list, and a locator on every claim. Then a top-5 risk
+rank by weight (money → control → exit → missing → ambiguity), four independent
+reviewer passes on those five clauses with no cross-talk, an anonymized ranking of
+those four outputs, and a chairman who writes the memo and **keeps the
+disagreements**. Then the side letter is redlined with every change footnoted to a
+reviewer and a source. Nothing of that is novel except the discipline of refusing to
+let a claim in without a locator.
 
 ## Credits
 
 - Wiki pattern: Andrej Karpathy's LLM Wiki
-- Council protocol: Andrej Karpathy's LLM Council (protocol only; this repo does
-  not copy or run that app)
+- Council protocol: Andrej Karpathy's LLM Council — protocol only; this repo does
+  not copy or run that app
 - Skill, prompts, Halden matter: Tamaz Sujashvili, MIT
 
 ## License

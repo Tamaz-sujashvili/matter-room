@@ -4,7 +4,7 @@ from: Dana Okafor <dana.okafor@pryorlyle.example>
 to: Elena Marsh <elena@halden.example>
 date: 2026-11-12
 ingested: 2026-11-18
-sha256: PENDING
+sha256: 57b91f6c466287d7657523359401322a91e0c76de3e6a715080052032b7b9d28
 note: Constructed email. Fictional addresses.
 ---
 

@@ -4,7 +4,7 @@ from: Dana Okafor <dana.okafor@pryorlyle.example>
 to: Elena Marsh <elena@halden.example>
 date: 2026-11-16
 ingested: 2026-11-18
-sha256: PENDING
+sha256: 924c6d311fbe5f965352b193071e25b632bbd0edd3b21ab1767d933721ccc8b8
 note: Constructed email. Counsel widens MFN beyond the term sheet and starts information rights now. Close reminder.
 ---
 

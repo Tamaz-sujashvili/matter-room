@@ -4,7 +4,7 @@ from: Elena Marsh <elena@halden.example>
 to: Dana Okafor <dana.okafor@pryorlyle.example>
 date: 2026-11-14
 ingested: 2026-11-18
-sha256: PENDING
+sha256: 359aef98e4aabdc23b62daa206e3006a6c2e0c745892368698da1f4b4eadb3d4
 note: Constructed email. Founder pushes back on two points. No reply in this email.
 ---
 

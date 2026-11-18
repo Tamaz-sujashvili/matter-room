@@ -1,58 +1,63 @@
 # NEXT SESSION BRIEFING — read this first
 
-You are picking up **Matter Room** for **Built with AutoClaw — Round 3**, Legal Practice track.
+You are finishing **Matter Room** for **Built with AutoClaw — Round 3**, Legal
+Practice track.
 
 - Owner: Tamaz Sujashvili
 - Deadline: **Friday 20 Nov 2026, 23:59 UTC+8 = 19:59 Tbilisi (UTC+4)**
 - This folder is the repo. The demo matter is `examples/halden-safe/`.
-- Do **not** redesign the architecture. The plan is `matter-room-plan.md`.
+- Plan: `matter-room-plan.md`. Do not redesign the architecture.
 
-## Read order (do not skip)
+## State: the build and the run are done
 
-1. This file
-2. `matter-room-plan.md` — the execution plan (clock, deliverables, fallbacks)
-3. `SKILL.md` — what AutoClaw reads and runs
-4. `examples/halden-safe/raw/` — the Halden corpus (already drafted)
-5. `prompts/` — council seats; do not improvise new seats
+The full Matter Room run has been executed on the Halden matter. Committed and
+lint-clean.
 
-## What is already done vs what you must do
+- `raw/` — 8 sources, SHA256 stamped, two structural fixes logged with before/after
+  hashes
+- L2 wiki — 13 pages (4 entities, 5 concepts, 2 comparisons, 2 queries), no broken
+  links, no orphans
+- `queries/risk-rank-top-5.md` — the five clauses that went to the council
+- `council/` — brief, 4 seats, anonymized ranking, chairman; 4 disagreements kept
+- `deliverables/` — memo, redline (10 changes), timeline, evidence index,
+  verification log (7 verified, 1 corrected)
+- `python3 scripts/lint_matter.py examples/halden-safe` → **0 errors, 0 warnings**
+- `log.md` records every step, including the two places the agent was wrong
 
-Done in this scaffold:
+## What is left — in order
 
-- Repo tree, plan, skill, prompts, templates, lint script, install script
-- Halden raw corpus: SAFE, side letter, term sheet, 4 emails, cap table
-- Contested facts are planted (pro rata, information rights timing, MFN scope, entire-agreement fight)
+1. **Push the repo public.** No git remote is configured yet:
+   ```bash
+   gh repo create Tamaz-sujashvili/matter-room --public --source=. --push
+   ```
+   Then confirm `github.com/Tamaz-sujashvili/matter-room` loads logged out.
+2. **Initial the verification log.** Reopen rows 1–8 in
+   `deliverables/verification_log.md`, check each quotation, put your initials in
+   the sign-off block. Do not initial a row you have not reopened. Row 8 is the
+   correction — read it twice.
+3. **Record 90 seconds.** Attach `examples/halden-safe/` → run → open the memo, the
+   redline, the lint output, the verification log. No voiceover needed.
+4. **Post the X thread.** Copy in `matter-room-plan.md` §11. Follow
+   `@AutoClawAIer` first, put the hashtag and the mention in post 1, and check the
+   post in a logged-out browser. Update 4/4: the correction is the MFN *concession*
+   over-claim (email 04), not a timing point.
+5. **Submit the form.** Track = Legal Practice. Demo URL = the repo.
 
-Not done (this is the work):
+## Hard rules
 
-- Stamp `sha256` on every `raw/*.md` frontmatter (ingest step)
-- Compile L2 wiki pages (entities, concepts, comparisons)
-- Risk-rank top 5, run the four-reviewer council inside AutoClaw
-- Produce the five deliverables in `examples/halden-safe/deliverables/`
-- Run `scripts/lint_matter.py`, fix links, screenshot
-- Hand-verify 8 claims into `verification_log.md` (include at least one `corrected`)
-- Public GitHub push, X thread, form
+- Do not add features. The run is finished; anything new is a Friday risk.
+- Do not redline the YC Safe. It is issue-spotted in the memo and that is the point.
+- Do not invent a verification verdict. The blank sign-off block is honest and it
+  is also the strongest thing in the repo.
+- Do not edit `raw/` bodies. Two were fixed before the run and logged; a third edit
+  without a log entry breaks the only claim this repo really makes.
+- One Legal entry. No second track.
 
-## Clock (Tbilisi)
+## If something breaks
 
-| Date | Phase |
+| Problem | Move |
 |---|---|
-| Wed 18 Nov | Ingest + compile + rehearsal. Council if time. |
-| Thu 19 Nov | Full council, all deliverables, lint, verification log, push public |
-| Fri 20 Nov | Record, post, submit form. **No new features.** |
-
-## First command
-
-```bash
-cd /Users/tazo/Desktop/matter-room
-python3 scripts/lint_matter.py examples/halden-safe
-# then follow SKILL.md § Ingest on examples/halden-safe
-```
-
-## Hard rules for this entry
-
-- AutoClaw Legal Assistant is the runtime. Do not boot Karpathy's Node council app.
-- Do not redline the YC SAFE. Redline the side letter only.
-- Every memo claim needs `[[raw/<file>.md#anchor]]`.
-- Fictional matter. Do not swap in a real client document on Friday.
-- One Legal entry. Second track only after the X post is live.
+| Push fails on auth | `gh auth status`, then `git remote add origin <url> && git push -u origin main` |
+| Recorder will not capture the app | Screenshots of memo, redline, lint, log are enough — the post narrates |
+| Form rejects the demo URL | Put the recording link at the top of README, resubmit the same URL |
+| Late correction found in the memo | Fix it, log it, post it. A visible correction is the process working |

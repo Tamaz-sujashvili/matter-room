@@ -2,7 +2,8 @@
 """Lint a Matter Room directory. Exit 0 if no errors, 1 if issues found.
 
 Forked from create-wiki's lint-wiki.py (Tamaz Sujashvili, MIT).
-Legal additions: uncited high-risk, contested without a pair, deliverable backlinks.
+Legal additions: uncited high-risk, contested without a pair, deliverable
+backlinks, citation anchors that do not exist in the cited source.
 """
 
 from __future__ import annotations
@@ -21,6 +22,8 @@ __version__ = "1.0.0"
 
 WIKI_DIRS = ("entities", "concepts", "comparisons", "queries")
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]")
+ANCHOR_LINK_RE = re.compile(r"\[\[([^\]|#]+)#([^\]|]+)")
+HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*$", re.MULTILINE)
 FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
 REQUIRED_FIELDS = ("title", "created", "updated", "type", "tags", "sources", "risk", "contested")
 LIST_ITEM_RE = re.compile(r"^\s*-\s+(.+)$")
@@ -94,6 +97,23 @@ def parse_frontmatter(text: str) -> Dict[str, str]:
     return data
 
 
+def heading_slugs(text: str) -> Set[str]:
+    """Slugs for every heading in a source, matching the citation convention.
+
+    Lowercase, drop everything that is not alphanumeric, space or hyphen, turn
+    spaces into hyphens, collapse runs of hyphens. "## 2. Purchase; Conversion"
+    and "## Email 04 — 16 Nov 2026" both produce a usable anchor.
+    """
+    slugs: Set[str] = set()
+    for heading in HEADING_RE.findall(text):
+        slug = re.sub(r"[^a-z0-9\s-]", "", heading.lower())
+        slug = re.sub(r"\s+", "-", slug.strip())
+        slug = re.sub(r"-{2,}", "-", slug).strip("-")
+        if slug:
+            slugs.add(slug)
+    return slugs
+
+
 def slug_from_path(path: Path, matter: Path) -> str:
     rel = path.relative_to(matter)
     return str(rel.with_suffix("")).replace(os.sep, "/")
@@ -129,7 +149,7 @@ def load_taxonomy(schema_path: Path) -> Set[str]:
 
 def collect_pages(matter: Path) -> Dict[str, Path]:
     pages: Dict[str, Path] = {}
-    for dirname in (*WIKI_DIRS, "raw", "deliverables"):
+    for dirname in (*WIKI_DIRS, "raw", "deliverables", "council"):
         base = matter / dirname
         if not base.exists():
             continue
@@ -172,7 +192,6 @@ def lint_matter(matter: Path) -> LintReport:
         path = pages[slug]
         text = path.read_text(encoding="utf-8")
         fm = parse_frontmatter(text)
-
         missing = [f for f in REQUIRED_FIELDS if f not in fm]
         if missing:
             report.add("error", "frontmatter", f"{slug}: missing fields {missing}")
@@ -217,6 +236,30 @@ def lint_matter(matter: Path) -> LintReport:
                     "error",
                     "contested-unpaired",
                     f"{slug}: contested true but only {len(sources)} source(s)",
+                )
+
+    # Legal check 4: a citation anchor must exist in the cited source. The
+    # wikilink pass above resolves file paths only, so a wrong #anchor passes it.
+    anchor_cache: Dict[str, Set[str]] = {}
+    cite_files = list(l2_slugs) + [s for s in pages if s.startswith("deliverables/")]
+    for slug in cite_files:
+        text = pages[slug].read_text(encoding="utf-8")
+        for target, anchor in ANCHOR_LINK_RE.findall(text):
+            target = target.strip()
+            if not target.startswith("raw/"):
+                continue
+            if target not in pages:
+                target = target[:-3] if target.endswith(".md") else target
+            source = pages.get(target)
+            if source is None:
+                continue  # broken file link is already reported above
+            if target not in anchor_cache:
+                anchor_cache[target] = heading_slugs(source.read_text(encoding="utf-8"))
+            if anchor.strip() not in anchor_cache[target]:
+                report.add(
+                    "error",
+                    "bad-anchor",
+                    f"{slug}: [[{target}#{anchor}]] — no such heading in {target}.md",
                 )
 
     for slug, count in inbound.items():

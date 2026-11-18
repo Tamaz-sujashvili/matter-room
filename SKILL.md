@@ -66,10 +66,16 @@ matter/
 Every factual claim in an L2 page or deliverable carries a locator:
 
 ```
-[[raw/safe.md#s7-entire-agreement]]
-[[raw/email-04.md#2026-11-16]]
+[[raw/safe.md#6-miscellaneous]]          # §6.2 lives in §6
+[[raw/email-04.md#email-04-16-nov-2026]] # the date is in the heading
 [[raw/cap-table.md#post-money-math]]
 ```
+
+**Anchors are heading slugs, not section numbers.** Lowercase the heading text,
+drop punctuation, turn spaces into hyphens: `## 2. Purchase; Conversion` becomes
+`#2-purchase-conversion`. A clause with no heading of its own is cited to the
+nearest heading, with the clause number in the prose ("§6.2"). The linter fails a
+citation whose anchor does not exist, so a wrong slug is caught, not published.
 
 A claim without a locator is `confidence: low` and **may not enter the memo**.
 
@@ -86,8 +92,8 @@ risk: high | medium | low
 contested: true | false
 confidence: high | medium | low
 sources:
-  - "[[raw/safe.md#s7-entire-agreement]]"
-  - "[[raw/side-letter.md#s4-mfn]]"
+  - "[[raw/safe.md#6-miscellaneous]]"
+  - "[[raw/side-letter.md#4-most-favored-nation]]"
 ---
 ```
 
@@ -149,15 +155,22 @@ For each file the user drops into `raw/` (or names):
 
 A single source often updates 5–10 pages. That compounding is intentional.
 
-#### Suggested anchors for a financing matter
+#### Anchors that exist in a financing matter
+
+Anchors are the headings the source actually has. Check before you cite; the
+linter rejects anything else.
 
 | Source | Anchors |
 |---|---|
-| SAFE | `#s1-definitions` `#s2-conversion` `#s3-dissolution` `#s4-liquidity` `#s5-no-stockholder-rights` `#s7-entire-agreement` |
-| Side letter | `#s1-recitals` `#s2-pro-rata` `#s3-information` `#s4-mfn` `#s5-conflict` `#s6-misc` |
-| Term sheet | `#row-pro-rata` `#row-info-rights` `#row-mfn` `#row-cap` `#row-close` |
-| Emails | `#YYYY-MM-DD` |
-| Cap table | `#post-money-math` `#option-pool` |
+| SAFE | `#1-definitions` `#2-purchase-conversion` `#3-subsequent-issuances-this-instrument-is-silent` `#4-no-stockholder-rights` `#6-miscellaneous` `#signature-page` |
+| Side letter | `#1-recitals` `#2-pro-rata-rights` `#3-information-rights` `#4-most-favored-nation` `#5-conflict-entire-agreement` `#6-miscellaneous` |
+| Term sheet | `#investment` (the row table — name the row in prose) `#other` |
+| Emails | `#email-01-12-nov-2026` … `#email-04-16-nov-2026` |
+| Cap table | `#outstanding` `#post-money-math` `#option-pool` `#what-this-table-does-not-model` |
+
+If a row or clause deserves its own anchor, give the source a heading — do that
+**before** ingest. After ingest the body is frozen and the nearest heading is the
+best locator available.
 
 ### 2. Risk rank (before council)
 
@@ -212,7 +225,16 @@ python3 scripts/lint_matter.py "$MATTER"
 # or --json for agent parsing
 ```
 
-Then manually verify what the script cannot judge (contradictions, stale law).
+Four legal checks on top of the wiki checks (broken links, orphans, index
+completeness, frontmatter, SHA drift, page size):
+
+1. **uncited-high-risk** — `risk: high` with no `[[raw/...]]` in the body
+2. **contested-unpaired** — `contested: true` with fewer than two sources
+3. **deliverable-backlink** — a file in `deliverables/` missing from `index.md`
+4. **bad-anchor** — `[[raw/x.md#anchor]]` where the heading does not exist
+
+Then manually verify what the script cannot judge (contradictions, stale law,
+whether a quotation actually supports the claim built on it).
 
 Append to `log.md`: `## [YYYY-MM-DD] lint | N issues found`
 
