@@ -45,6 +45,9 @@ lint-clean.
 
 ## Hard rules
 
+- `SUBMISSION.md` in the repo root is **local and uncommitted** — the final post copy
+  (character-counted for X), the video shot list, the form field sheet. Do not commit
+  it; it is a working brief, not part of the demo.
 - Do not add features. The run is finished; anything new is a Friday risk.
 - Do not redline the YC Safe. It is issue-spotted in the memo and that is the point.
 - Do not invent a verification verdict. The blank sign-off block is honest and it
