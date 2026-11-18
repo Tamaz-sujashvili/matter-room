@@ -26,22 +26,22 @@ lint-clean.
 
 ## What is left — in order
 
-1. **Push the repo public.** No git remote is configured yet:
-   ```bash
-   gh repo create Tamaz-sujashvili/matter-room --public --source=. --push
-   ```
-   Then confirm `github.com/Tamaz-sujashvili/matter-room` loads logged out.
+1. ~~Push the repo public~~ **Done.** `https://github.com/Tamaz-sujashvili/matter-room`
+   is live and loads logged out. `origin` is set to HTTPS with the keychain
+   credential; the SSH deploy key on this machine belongs to a different repo and
+   cannot push here.
 2. **Initial the verification log.** Reopen rows 1–8 in
-   `deliverables/verification_log.md`, check each quotation, put your initials in
-   the sign-off block. Do not initial a row you have not reopened. Row 8 is the
-   correction — read it twice.
+   `deliverables/verification_log.md`, check each quotation, write your verdict and
+   initials. Do not initial a row you have not reopened. Row 8 is the correction —
+   read it twice.
 3. **Record 90 seconds.** Attach `examples/halden-safe/` → run → open the memo, the
    redline, the lint output, the verification log. No voiceover needed.
 4. **Post the X thread.** Copy in `matter-room-plan.md` §11. Follow
    `@AutoClawAIer` first, put the hashtag and the mention in post 1, and check the
    post in a logged-out browser. Update 4/4: the correction is the MFN *concession*
    over-claim (email 04), not a timing point.
-5. **Submit the form.** Track = Legal Practice. Demo URL = the repo.
+5. **Submit the form.** Track = Legal Practice. Demo URL =
+   `https://github.com/Tamaz-sujashvili/matter-room`.
 
 ## Hard rules
 
@@ -57,7 +57,7 @@ lint-clean.
 
 | Problem | Move |
 |---|---|
-| Push fails on auth | `gh auth status`, then `git remote add origin <url> && git push -u origin main` |
+| Push fails on auth | `git remote -v`, then `git credential-osxkeychain get` — the stored token is `repo`-scoped for `Tamaz-sujashvili` |
 | Recorder will not capture the app | Screenshots of memo, redline, lint, log are enough — the post narrates |
 | Form rejects the demo URL | Put the recording link at the top of README, resubmit the same URL |
 | Late correction found in the memo | Fix it, log it, post it. A visible correction is the process working |
