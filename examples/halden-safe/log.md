@@ -102,3 +102,20 @@ Audit checks run over the finished matter, none of which lint can do:
   issuance", "Major Investor" for the hyphenated "Major-investor")
 - README date error: "eleven days" between the Safe and the side letter; it is six
 - evidence index word count re-derived from the files: 2,636, not 2,632
+
+## [2026-11-18] note | two limits disclosed rather than hidden
+
+`SCHEMA.md` tells the compiler not to pre-solve the planted tensions in L2 before the
+council runs. Partly honoured and worth saying so: the concept pages record what each
+document says and name the conflicts — that is the citation work — but three of them
+(`pro-rata-rights`, `information-rights`, `entire-agreement`) also carry a first-pass
+assessment. The seats were run on `council/00-brief.md`, not on the pages, and four
+disagreements survived into the memo, so the council was not a rubber stamp. It was
+also not a blank slate.
+
+Second limit, now stated in the README: the four seats are one model with four sets
+of instructions. They are independent of each other and not independent of the model.
+Agreement across seats is weaker evidence than it looks; disagreement is stronger.
+
+Neither point changes a deliverable. Both change what a reader should believe about
+them, which is the reason to write them down.

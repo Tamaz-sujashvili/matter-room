@@ -116,6 +116,29 @@ disagreements**. Then the side letter is redlined with every change footnoted to
 reviewer and a source. Nothing of that is novel except the discipline of refusing to
 let a claim in without a locator.
 
+## Limits — read these before you trust it
+
+**The four seats are one model.** They are independent of each other — no seat sees
+another's output, and the ranking pass sees them anonymised — but they are not
+independent of the model that runs them. Where they disagree, the disagreement is
+worth reading. Where they agree, it may be the model's prior rather than four
+converging judgements. Treat the council as a way to surface objections you would
+have missed, not as four experts.
+
+**The compile pass forms views before the council runs.** L2 pages record what each
+document says and name the conflicts; three of them also carry a first-pass
+assessment. The seats argued exposure and remedy on a separate packet, and four
+disagreements survived into the memo — but the wiki was not a blank slate.
+
+**Lint checks structure, not sense.** It proves a citation points at a heading that
+exists and that a `risk: high` page quotes something. It cannot tell you the quote
+supports the claim. That is what the verification log is for, and why the human
+verdict column stays blank until someone reads it.
+
+**Citations are heading slugs.** `[[raw/safe.md#6-miscellaneous]]` resolves in this
+repo's linter and in any path-based viewer. Obsidian's own autocomplete writes the
+literal heading text instead; both conventions exist and this pack picked one.
+
 ## Credits
 
 - Wiki pattern: Andrej Karpathy's LLM Wiki
