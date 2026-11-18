@@ -30,18 +30,22 @@ lint-clean.
    is live and loads logged out. `origin` is set to HTTPS with the keychain
    credential; the SSH deploy key on this machine belongs to a different repo and
    cannot push here.
-2. **Initial the verification log.** Reopen rows 1–8 in
+2. ~~Public page~~ **Done.** `https://tamaz-sujashvili.github.io/matter-room/`
+   serves `docs/index.html` via GitHub Pages (branch `main`, folder `/docs`). No
+   build step. Edit the file, push, wait a minute. Built to `brand.md`.
+3. **Initial the verification log.** Reopen rows 1–8 in
    `deliverables/verification_log.md`, check each quotation, write your verdict and
    initials. Do not initial a row you have not reopened. Row 8 is the correction —
    read it twice.
-3. **Record 90 seconds.** Attach `examples/halden-safe/` → run → open the memo, the
+4. **Record 90 seconds.** Attach `examples/halden-safe/` → run → open the memo, the
    redline, the lint output, the verification log. No voiceover needed.
-4. **Post the X thread.** Copy in `matter-room-plan.md` §11. Follow
+5. **Post the X thread.** Final copy is in `SUBMISSION.md` — the plan's §11 drafts
+   overrun X's 280-character limit and will not publish as written. Follow
    `@AutoClawAIer` first, put the hashtag and the mention in post 1, and check the
    post in a logged-out browser. Update 4/4: the correction is the MFN *concession*
    over-claim (email 04), not a timing point.
-5. **Submit the form.** Track = Legal Practice. Demo URL =
-   `https://github.com/Tamaz-sujashvili/matter-room`.
+6. **Submit the form.** Track = Legal Practice. Demo URL =
+   `https://tamaz-sujashvili.github.io/matter-room/`.
 
 ## Hard rules
 
