@@ -3,8 +3,8 @@
 > Live question: what does the founder actually owe on Monday, what gets redlined
 > in the side letter before Friday, and what stays off the Safe?
 > Date: 2026-11-18
-> Status: council-merged · agent verification pass: 7 verified, 1 corrected ·
-> human sign-off pending on [[deliverables/verification_log]]
+> Status: council-merged · agent check: 7 quotations match, 1 mismatch corrected ·
+> human verdicts pending on [[deliverables/verification_log]]
 > Council: seat A risk · seat B missing · seat C consistency · seat D ambiguity · chairman
 > Matter is **constructed and fictional**. No client data.
 
@@ -112,10 +112,10 @@ investor-specific right belongs in the letter.
 - **Assessment:** the right is normal for a $400k lead and the founder never disputed
   it — her 14 November email challenges only reporting and MFN —
   [[raw/email-03.md#email-03-14-nov-2026]]. What is not normal is a right over "any
-  issuance of Capital Stock" with no carve-out: read literally it reaches every
-  option grant and every conversion. Add to that a numerator that computes to zero,
-  no stated price, and no exercise window, and the clause cannot be operated in a
-  closing calendar.
+  subsequent issuance of Capital Stock" with no carve-out: read literally it reaches
+  every option grant and every conversion. Add to that a numerator that computes to
+  zero, no stated price, and no exercise window, and the clause cannot be operated in
+  a closing calendar.
 - **Action:** add carve-outs for plan issuances, conversions and acquisitions; state
   the price as the price paid by the new investors; fix the denominator to the
   post-conversion percentage; set a 15-day election window. Redline changes 6–8.
@@ -164,6 +164,27 @@ investor-specific right belongs in the letter.
 - **Action:** model dilution at 4.76%; decide the option pool size before the priced
   round, since the pool sits inside Company Capitalization.
 
+### 3.6 The date the founder thinks she has
+
+- **What it is:** a scheduling assumption, not a clause. `chairman-added` — no seat
+  raised it.
+- **Risk:** low legally, medium commercially.
+- **Documents:**
+  - [[raw/email-04.md#email-04-16-nov-2026]] — "If the side letter isn't signed by
+    Friday 20 November, I need a reason, because Monday is a wire day, not a
+    negotiation day".
+  - [[raw/term-sheet.md#investment]] — the only outside date is 30 November, in a
+    document that says it is non-binding.
+  - [[raw/safe.md#1-definitions]] — the only date in a signed document is the
+    Purchase Date, 10 November.
+- **Assessment:** no instrument sets a 20 November deadline. The funding target of
+  23 November is a target that has been repeated since 12 November —
+  [[raw/email-01.md#email-01-12-nov-2026]]. The founder has four days more than the
+  email implies, and a legitimate answer to "I need a reason": the reason is that
+  three clauses are still being negotiated.
+- **Action:** do not sign on Friday to buy peace. Sign when changes 1–4 are settled;
+  a Monday wire does not require a Friday signature.
+
 ## 4. Recommended redline set
 
 Side letter only. Change numbers match [[deliverables/redline]].
@@ -191,8 +212,8 @@ every concession permanent. The chairman adopts the objection — same trade, la
   bundle has no charter, no bylaws, and no board minutes, so this memo cannot say.
   This is the first thing to check before signature.
 - **Whether a 4.76% holder is a "Major Investor"** under any existing instrument.
-  Nothing in the bundle defines the term; only the term sheet uses it —
-  [[raw/term-sheet.md#investment]].
+  The bundle defines nothing; only the term sheet uses the phrase, hyphenated, as
+  "Major-investor information rights" — [[raw/term-sheet.md#investment]].
 - **Whether the 6 November call happened as described.** There is no written record
   of it in the bundle — [[raw/email-04.md#email-04-16-nov-2026]]. This memo treats it
   as unproven and, for the reasons in §3.1, as superseded either way.
@@ -204,8 +225,10 @@ every concession permanent. The chairman adopts the objection — same trade, la
 ## 6. Verification pointer
 
 Eight claims sampled in [[deliverables/verification_log]], each with its locator and
-the quoted source text. Seven verified on a first pass and one was corrected. This
-memo may not be called verified until a human has initialled those rows.
+the quoted source text. Seven quotations match the cited file; one did not and was
+corrected. That log separates the agent's check from the human verdict, and the
+verdict column is `pending` throughout. This memo may not be called verified until a
+human has filled it.
 
 ## 7. Correction log
 

@@ -20,7 +20,7 @@ lint-clean.
 - `queries/risk-rank-top-5.md` — the five clauses that went to the council
 - `council/` — brief, 4 seats, anonymized ranking, chairman; 4 disagreements kept
 - `deliverables/` — memo, redline (10 changes), timeline, evidence index,
-  verification log (7 verified, 1 corrected)
+  verification log (7 quotations match, 1 corrected; verdicts pending your sign-off)
 - `python3 scripts/lint_matter.py examples/halden-safe` → **0 errors, 0 warnings**
 - `log.md` records every step, including the two places the agent was wrong
 

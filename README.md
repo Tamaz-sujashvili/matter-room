@@ -16,7 +16,7 @@ pages, 4 reviewer seats, 5 deliverables, 0 lint issues.
 ## What the Halden run produced
 
 Halden Analytics (fictional, Delaware) signed a $400k YC Post-Money Safe at an $8M
-cap. Eleven days later counsel sent an unexecuted side letter adding pro rata,
+cap. Six days later counsel sent an unexecuted side letter adding pro rata,
 monthly reporting, and an MFN. Close is Monday. Four emails contradict the paper.
 
 The run's findings, all cited to a file and a section:

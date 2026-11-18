@@ -75,3 +75,30 @@ until it is initialled.
 Added a fourth legal check: `bad-anchor`. It failed its first run — 8 citations to
 `#post-money-math` and `#option-pool` in the cap table, which had no such
 headings. That is the check paying for itself on the first matter.
+
+## [2026-11-18] verify | protocol fix — agent check split from human verdict
+
+`prompts/verify.md` is explicit: the agent writes `pending` and the human fills the
+verdict. The first version of `verification_log.md` had the agent filling verdicts,
+which broke the pack's own rule and would have made the strongest claim in the repo
+untrue.
+
+Fixed: the table now has two authors. `Agent check` records whether the quotation
+matches the cited file — mechanical, and the agent may state it. `Human verdict` is
+`pending` in all eight rows, with a blank sign-off block below. The correction in
+row 8 is still visible, and the memo still carries its correction log at §7.
+
+Also added while auditing: `research_memo.md` §3.6, the 20 November point the
+chairman raised and no seat did. `prompts/chairman.md` requires chairman-only
+findings to be marked, so it carries `chairman-added`.
+
+Audit checks run over the finished matter, none of which lint can do:
+
+- every `**Before**` quotation in the redline compared against `raw/side-letter.md`
+  — 9 of 9 present verbatim, change 5 has no before-text by design
+- every quotation in the memo, redline, timeline and verification log compared
+  against the union of raw bodies — 3 genuine misquotes found and fixed (evidence
+  index paraphrase presented as a quotation, "any issuance" for "any subsequent
+  issuance", "Major Investor" for the hyphenated "Major-investor")
+- README date error: "eleven days" between the Safe and the side letter; it is six
+- evidence index word count re-derived from the files: 2,636, not 2,632
