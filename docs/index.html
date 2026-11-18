@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matter Room — a contract bundle in, a matter file out</title>
+<meta name="description" content="Matter Room turns a folder of agreements and emails into a cited wiki, a four-reviewer council memo, and a redline where every change names its source. Built with AutoClaw, Round 3, Legal Practice.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f7f4ec'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='24' text-anchor='middle' fill='%238f1f16'%3E%C2%A7%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --paper: #f7f4ec;
+    --card: #fffdf7;
+    --ink: #191611;
+    --ink-soft: #4f4a41;
+    --rule: #dcd5c4;
+    --accent: #8f1f16;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --measure: 68ch;
+    --gutter: clamp(1.25rem, 5vw, 4rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14120e;
+      --card: #1b1813;
+      --ink: #f2ece0;
+      --ink-soft: #b6ae9c;
+      --rule: #332f26;
+      --accent: #e5988a;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: clamp(1.0625rem, 0.95rem + 0.35vw, 1.1875rem);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+  code {
+    font-family: var(--mono); font-size: 0.88em;
+    background: var(--rule); color: var(--ink);
+    padding: 0.1em 0.35em; border-radius: 2px;
+  }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .skip {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--card); color: var(--ink);
+    padding: 0.75rem 1rem; z-index: 10; border: 1px solid var(--rule);
+  }
+  .skip:focus { left: 0.5rem; top: 0.5rem; }
+
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 var(--gutter); }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    position: sticky; top: 0; z-index: 5;
+    background: color-mix(in srgb, var(--paper) 94%, transparent);
+    backdrop-filter: blur(6px);
+  }
+  .masthead .wrap {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem; padding-block: 0.9rem;
+  }
+  .wordmark {
+    font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase;
+    text-decoration: none; color: var(--ink); font-weight: 600;
+  }
+  .wordmark span { color: var(--accent); }
+  .masthead nav { display: flex; gap: clamp(0.75rem, 3vw, 1.75rem); flex-wrap: wrap; }
+  .masthead nav a {
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none; color: var(--ink-soft);
+    padding-block: 0.6rem;
+  }
+  .masthead nav a:hover { color: var(--accent); }
+
+  /* ---------- hero ---------- */
+
+  .hero { padding-block: clamp(3rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4rem); }
+  .eyebrow {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-soft);
+    margin: 0 0 1.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule);
+  }
+  h1 {
+    font-size: clamp(2.25rem, 1.4rem + 4.2vw, 4.25rem);
+    line-height: 1.02; letter-spacing: -0.022em; font-weight: 600;
+    margin: 0 0 1.5rem; max-width: 18ch; text-wrap: balance;
+  }
+  .lede {
+    font-size: clamp(1.1rem, 1rem + 0.5vw, 1.375rem);
+    max-width: var(--measure); color: var(--ink-soft); margin: 0 0 2.25rem;
+    text-wrap: pretty;
+  }
+  .actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .btn {
+    display: inline-flex; align-items: center; min-height: 44px;
+    padding: 0.6rem 1.15rem; border: 1px solid var(--ink);
+    background: var(--ink); color: var(--paper);
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none; border-radius: 2px;
+    transition: background 140ms ease, color 140ms ease;
+  }
+  .btn:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
+  .btn.ghost:hover { border-color: var(--ink); background: transparent; color: var(--accent); }
+  .meta-line {
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em;
+    color: var(--ink-soft); margin: 0; max-width: var(--measure);
+  }
+
+  /* ---------- sections ---------- */
+
+  .section { padding-block: clamp(2.75rem, 7vw, 4.5rem); border-top: 1px solid var(--rule); }
+  h2 {
+    display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap;
+    font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.9rem); font-weight: 600;
+    letter-spacing: -0.015em; margin: 0 0 1.75rem; line-height: 1.15;
+  }
+  h2 .num {
+    font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em;
+    color: var(--accent); font-weight: 400; text-transform: uppercase;
+  }
+  h3 { font-size: 1.125rem; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  .section > p:last-child { margin-bottom: 0; }
+
+  /* facts strip */
+  .facts {
+    list-style: none; margin: 2rem 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .facts li { padding: 1.1rem 1.1rem 1.1rem 0; border-right: 1px solid var(--rule); }
+  .facts li:last-child { border-right: 0; }
+  .facts .k {
+    display: block; font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
+    margin-bottom: 0.4rem;
+  }
+  .facts .v { font-size: 0.98rem; }
+
+  blockquote {
+    margin: 2rem 0 0; padding: 0 0 0 1.25rem;
+    border-left: 2px solid var(--accent); max-width: var(--measure);
+    font-size: 1.06em; color: var(--ink);
+  }
+  blockquote p { margin: 0; }
+  blockquote cite {
+    display: block; margin-top: 0.75rem; font-family: var(--mono);
+    font-size: 0.72rem; letter-spacing: 0.06em; color: var(--ink-soft);
+    font-style: normal; text-transform: uppercase;
+  }
+
+  /* findings */
+  .findings { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .findings > li {
+    display: grid; grid-template-columns: 3rem 1fr; gap: 0 1.25rem;
+    padding: 1.6rem 0; border-bottom: 1px solid var(--rule);
+  }
+  .findings > li:first-child { border-top: 1px solid var(--rule); }
+  .findings .mark {
+    font-family: var(--mono); font-size: 0.8rem; color: var(--accent);
+    padding-top: 0.2rem;
+  }
+  .findings p { margin-bottom: 0.6rem; color: var(--ink-soft); }
+  .cite {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.03em;
+    color: var(--ink-soft); margin: 0 !important;
+  }
+  .cite a { color: var(--ink-soft); text-decoration-color: var(--rule); }
+  .cite a:hover { color: var(--accent); }
+
+  /* steps */
+  .steps { counter-reset: step; list-style: none; margin: 0; padding: 0;
+    display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .steps li {
+    background: var(--paper); padding: 1.25rem 1.35rem;
+    display: grid; grid-template-columns: 2.5rem 1fr; gap: 0 1rem;
+  }
+  .steps li::before {
+    counter-increment: step; content: counter(step, decimal-leading-zero);
+    font-family: var(--mono); font-size: 0.8rem; color: var(--accent);
+    line-height: 1.9;
+  }
+  .steps h3 { grid-column: 2; }
+  .steps p { grid-column: 2; margin: 0; color: var(--ink-soft); font-size: 0.95rem; }
+
+  /* deliverables */
+  .grid { list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule); }
+  .grid li { background: var(--paper); }
+  .grid a {
+    display: grid; gap: 0.35rem; padding: 1.35rem 1.25rem; min-height: 8.5rem;
+    text-decoration: none; color: var(--ink); height: 100%;
+    transition: background 140ms ease;
+  }
+  .grid a:hover { background: var(--card); }
+  .grid a:hover .name { color: var(--accent); }
+  .grid .name {
+    font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.02em;
+    border-bottom: 1px solid var(--rule); padding-bottom: 0.5rem;
+  }
+  .grid .desc { font-size: 0.92rem; color: var(--ink-soft); }
+
+  /* correction */
+  .correction { background: var(--card); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .correction .flag {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.85rem;
+  }
+
+  /* limits */
+  .limits { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; }
+  .limits li { max-width: var(--measure); }
+  .limits strong { display: block; font-size: 1rem; margin-bottom: 0.25rem; }
+  .limits span { color: var(--ink-soft); font-size: 0.95rem; }
+
+  /* footer */
+  footer { border-top: 1px solid var(--rule); padding-block: 2.5rem 3.5rem; }
+  footer .wrap {
+    display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--ink-soft); }
+  footer a:hover { color: var(--accent); }
+  footer p { margin: 0; max-width: 34ch; }
+
+  @media (max-width: 34rem) {
+    .masthead { position: static; backdrop-filter: none; }
+    .masthead nav { display: none; }
+    .findings > li { grid-template-columns: 1fr; gap: 0.35rem; }
+    .findings .mark { padding-top: 0; }
+    .steps li { grid-template-columns: 2rem 1fr; }
+    .facts li { border-right: 0; border-bottom: 1px solid var(--rule); padding-right: 0; }
+    .facts li:last-child { border-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="#top">Matter<span>&nbsp;Room</span></a>
+    <nav aria-label="Primary">
+      <a href="#found">Findings</a>
+      <a href="#deliverables">Deliverables</a>
+      <a href="#wrong">Correction</a>
+      <a href="https://github.com/Tamaz-sujashvili/matter-room">Repo</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap" id="top">
+
+    <section class="hero">
+      <p class="eyebrow">Built with AutoClaw · Round 3 · Legal Practice</p>
+      <h1>A contract bundle in. A matter file out.</h1>
+      <p class="lede">
+        Matter Room is a skill an agent reads. It hashes a folder of agreements and
+        emails, compiles a cited wiki, ranks the five worst clauses, runs four
+        reviewer passes on them, and drafts the redline — with every change traced
+        to a reviewer and a source.
+      </p>
+      <p class="actions">
+        <a class="btn" href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/research_memo.md">Read the memo</a>
+        <a class="btn ghost" href="https://github.com/Tamaz-sujashvili/matter-room">View the run</a>
+      </p>
+      <p class="meta-line">
+        Constructed matter · 8 sources · 13 cited pages · 5 deliverables · lint clean
+      </p>
+    </section>
+
+    <section class="section" id="matter">
+      <h2><span class="num">§ 1</span> The matter</h2>
+      <p>
+        Halden Analytics signed a $400,000 YC Post-Money Safe with Meridian Ventures
+        at an $8,000,000 cap. Six days later, opposing counsel sent a side letter
+        adding pro rata rights, monthly reporting and a most-favoured-nation clause.
+        Four emails sit in the file. Close is Monday. The Company has no counsel.
+      </p>
+      <ul class="facts">
+        <li><span class="k">Instrument</span><span class="v">YC Post-Money Safe<br>cap, no discount</span></li>
+        <li><span class="k">Purchase</span><span class="v">$400,000<br>at an $8M cap</span></li>
+        <li><span class="k">Added by letter</span><span class="v">Pro rata · reporting<br>MFN</span></li>
+        <li><span class="k">Close</span><span class="v">Monday 23 Nov<br>no binding deadline</span></li>
+      </ul>
+      <blockquote>
+        <p>
+          The emails promise pro rata and information rights “of course”. The Safe is
+          silent and has an entire-agreement clause. What does the founder actually
+          owe, what gets redlined before Friday, and what stays off the Safe?
+        </p>
+        <cite>The live question · queries/what-does-the-founder-owe.md</cite>
+      </blockquote>
+    </section>
+
+    <section class="section" id="found">
+      <h2><span class="num">§ 2</span> What the run found</h2>
+      <ol class="findings">
+        <li>
+          <span class="mark" aria-hidden="true">01</span>
+          <div>
+            <h3>The integration clause is temporal. The draft's override is the problem.</h3>
+            <p>
+              §6.2 supersedes prior agreements, understandings and term sheets — the
+              28 October term sheet and a 6 November call. It does not reach a letter
+              signed ten days after it. So the letter binds. Which makes its own
+              “this Side Letter shall control” the clause to delete first.
+            </p>
+            <p class="cite">
+              <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/raw/safe.md">safe.md §6.2</a> ·
+              <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/raw/side-letter.md">side-letter.md §5.2</a>
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="mark" aria-hidden="true">02</span>
+          <div>
+            <h3>The MFN reaches convertible notes, which the term sheet never covered.</h3>
+            <p>
+              The term sheet said subsequent Safes. The draft says any Safe or
+              convertible promissory note, and adds that “more favorable” includes
+              additional rights. A $250k bridge at a lower cap then resets this Safe
+              automatically — no notice, no election, no signature.
+            </p>
+            <p class="cite">
+              <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/raw/side-letter.md">side-letter.md §4.1–4.2</a> ·
+              <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/raw/term-sheet.md">term-sheet.md</a>
+            </p>
+          </div>
+        </li>
+        <li>
+          <span class="mark" aria-hidden="true">03</span>
+          <div>
+            <h3>5.00% is the headline. 4.76% is the stake.</h3>
+            <p>
+              $400,000 ÷ $8,000,000 is the number founders quote. But the unissued
+              option pool sits inside Company Capitalization, so the Safe converts
+              into 500,000 shares on a 10.5M post-conversion base. Nothing to
+              redline — the definitions do that on their own.
+            </p>
+            <p class="cite">
+              <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/raw/cap-table.md">cap-table.md</a> ·
+              <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/raw/safe.md">safe.md §1.3, §1.7</a>
+            </p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section" id="how">
+      <h2><span class="num">§ 3</span> How it runs</h2>
+      <ol class="steps">
+        <li>
+          <h3>Ingest</h3>
+          <p>Hash every source. <code>raw/</code> freezes; edit a body and lint fails on drift.</p>
+        </li>
+        <li>
+          <h3>Compile</h3>
+          <p>Thirteen pages, each claim carrying a file and a section. No locator, no entry in the memo.</p>
+        </li>
+        <li>
+          <h3>Rank</h3>
+          <p>Five clauses by weight: money, then control, then exit, then what is missing, then ambiguity.</p>
+        </li>
+        <li>
+          <h3>Council</h3>
+          <p>Four seats, no cross-talk, then an anonymised ranking. The chairman keeps the disagreements.</p>
+        </li>
+        <li>
+          <h3>Deliver, then lint</h3>
+          <p>Memo, redline, timeline, evidence index, verification log. Lint is the gate before anything ships.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section" id="deliverables">
+      <h2><span class="num">§ 4</span> The five deliverables</h2>
+      <ul class="grid">
+        <li>
+          <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/research_memo.md">
+            <span class="name">research_memo.md</span>
+            <span class="desc">Five issues, each with what the documents say, the assessment, and the action. Council splits kept.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/redline.md">
+            <span class="name">redline.md</span>
+            <span class="desc">Ten changes, side letter only. Every strike and insertion footnoted to a reviewer and a source.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/fact_timeline.md">
+            <span class="name">fact_timeline.md</span>
+            <span class="desc">Dated rows, each cited. Four contested dates marked, including the one nobody can prove.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/evidence_index.md">
+            <span class="name">evidence_index.md</span>
+            <span class="desc">One row per source: SHA256, what it supports, what it contradicts.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/verification_log.md">
+            <span class="name">verification_log.md</span>
+            <span class="desc">Eight claims, quoted beside their source. Seven matched. One did not, and it is row 8.</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="section correction" id="wrong">
+    <div class="wrap">
+      <p class="flag">§ 5 · The correction</p>
+      <h2 style="margin-top:0">What it got wrong</h2>
+      <p>
+        The memo read opposing counsel's offer as a concession, and wrote that the
+        MFN gap was the cheapest of the three to close. The email says otherwise.
+      </p>
+      <blockquote>
+        <p>
+          “If you want the MFN limited to Safes, say so in one sentence and we'll
+          consider it — I'm not promising we'll agree.”
+        </p>
+        <cite>email-04 · 16 Nov 2026</cite>
+      </blockquote>
+      <p style="margin-top:1.5rem">
+        Row 8 of the verification log records the mismatch, the memo carries a
+        correction log at §7, and the council transcript was left wrong on purpose —
+        an edited transcript would hide the trail. A clean eight-for-eight would have
+        been the less believable artifact.
+      </p>
+      <p class="cite" style="margin-top:1rem">
+        <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/verification_log.md">verification_log.md row 8</a> ·
+        <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/research_memo.md">research_memo.md §7</a> ·
+        <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/council/06-chairman.md">council/06-chairman.md</a>
+      </p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="section" id="limits">
+      <h2><span class="num">§ 6</span> Limits, stated plainly</h2>
+      <ul class="limits">
+        <li>
+          <strong>One model, four seats.</strong>
+          <span>The reviewers are independent of each other and not independent of the model. Where they disagree, read it; where they agree, it may be the model's prior.</span>
+        </li>
+        <li>
+          <strong>The wiki was not a blank slate.</strong>
+          <span>The compile pass formed first views before the council ran. Four disagreements still survived into the memo, but the council was not a rubber stamp either.</span>
+        </li>
+        <li>
+          <strong>Lint checks structure, not sense.</strong>
+          <span>It proves a citation points at a heading that exists. It cannot prove the quote supports the claim. That is what the verification log is for — and why its verdict column is still blank.</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Fictional matter. Halden Analytics and Meridian Ventures do not exist. Nothing here is legal advice.</p>
+    <p>
+      <a href="https://github.com/Tamaz-sujashvili/matter-room">Repo</a> ·
+      <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/SKILL.md">SKILL.md</a> ·
+      <a href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/LICENSE">MIT</a>
+      <br>Tamaz Sujashvili · 2026
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
