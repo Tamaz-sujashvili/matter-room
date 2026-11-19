@@ -43,8 +43,9 @@ still runs first, because the brief cites it.
 Reader-facing means what a partner reads: headings, prose, table cells, link
 labels. Frontmatter, HTML comments and `[[path#anchor]]` targets do not count.
 `scripts/lint_matter.py` counts the file and fails above 350. Do not evade the cap
-by moving text into a table, a comment, or a collapsed section — the reader still
-reads it, so the counter still counts it.
+by moving text into a table or a collapsed section: the reader still reads it, so
+the counter still counts it. An HTML comment is excluded because nobody reads it,
+which makes it a hiding place, not a compression.
 
 ### Three sections, in this order, always
 
@@ -61,7 +62,7 @@ decision the partner has to make on the call.
 ### Evidence labels — at the point of use
 
 Every statement about what another party has agreed to carries one label, inline,
-next to the claim. Never in a legend the reader has to look up.
+next to the claim. Do not park the labels in a legend the reader has to look up.
 
 | Label | Means | Test that must pass |
 |---|---|---|
@@ -96,7 +97,8 @@ redline change is an opinion.
 A change heading **is** the anchor, so keep it short and slug-friendly:
 `## Change 1 — precedence` cites as `[[deliverables/redline#change-1-precedence]]`.
 Put the clause number in the body, not in the heading, or the anchor acquires a
-`52` in the middle of it and stops matching. The linter checks anchors into
+`52` in the middle of it (`Change 1 — §5.2 precedence` becomes
+`change-1-52-precedence`) and stops matching. The linter checks anchors into
 `deliverables/` and `council/` as well as `raw/`.
 
 ## Matter location
