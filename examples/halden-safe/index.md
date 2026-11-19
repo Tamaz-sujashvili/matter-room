@@ -2,8 +2,8 @@
 
 Halden / Meridian matter catalog. Update counts and dates on every ingest.
 
-> counts: entities 4 · concepts 5 · comparisons 2 · queries 2 · deliverables 5
-> updated: 2026-11-18 (ingest, compile, council, deliverables, lint)
+> counts: entities 4 · concepts 5 · comparisons 2 · queries 2 · deliverables 6
+> updated: 2026-11-20 (closing brief added; pre-close path)
 
 ## Raw sources
 
@@ -57,6 +57,7 @@ see [[council/00-brief]] for the packet.
 
 ## Deliverables
 
+- [[deliverables/closing_brief]] — first result on a pre-close request: 341 words, three edits
 - [[deliverables/research_memo]] — the memo; ten redline changes; correction log
 - [[deliverables/redline]] — side letter only, ten changes, each footnoted
 - [[deliverables/fact_timeline]] — dated rows, contested dates marked

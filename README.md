@@ -14,7 +14,7 @@ stack.
 
 **The demo is the example matter: [`examples/halden-safe/`](examples/halden-safe/).**
 Open that folder and you see the whole method run end to end — 8 sources, 13 wiki
-pages, 4 reviewer seats, 5 deliverables, 0 lint issues.
+pages, 4 reviewer seats, 6 deliverables, 0 lint issues.
 
 **Live page:** [tamaz-sujashvili.github.io/matter-room](https://tamaz-sujashvili.github.io/matter-room/)
 — the same claims as this README, each one linked to the file that supports it.

@@ -119,3 +119,20 @@ Agreement across seats is weaker evidence than it looks; disagreement is stronge
 
 Neither point changes a deliverable. Both change what a reader should believe about
 them, which is the reason to write them down.
+
+## [2026-11-20] brief | closing brief added, the pre-close path
+
+The 18 November run produced five deliverables and no brief: the pre-close routing
+did not exist yet. The skill now makes `deliverables/closing_brief.md` the first
+result of a pre-close request, so the example matter needs one or the claim is only
+in the skill text.
+
+Written from this matter's own eight sources, not from the separate demo matter.
+341 reader-facing words, three edits, each linked to the redline change that
+implements it: 1, 3 and 9. No new source, no new finding, no edit to `raw/`.
+
+Ten redline headings were renamed to the slug convention the linter now checks
+(`## Change 1 — precedence`, clause number in the body). The ten changes themselves
+are unchanged; only their headings moved.
+
+Lint rerun after the addition: 0 errors, 0 warnings. Eight source hashes still match.

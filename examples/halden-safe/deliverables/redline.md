@@ -11,8 +11,9 @@ the Company has to do. Sequence matters: take 1 first, then 3 and 4.
 
 ---
 
-## Change 1 — §5.2 precedence
+## Change 1 — precedence
 
+- Clause: §5.2
 - Reviewer: C consistency
 - Source: [[raw/side-letter.md#5-conflict-entire-agreement]], [[raw/safe.md#6-miscellaneous]]
 - Reason: as drafted the letter wins every conflict, including conflicts over terms
@@ -38,8 +39,9 @@ without §5.2 still delivers everything the Investor asked for.
 
 ---
 
-## Change 2 — §1.2 "amend and complement"
+## Change 2 — amend and complement
 
+- Clause: §1.2
 - Reviewer: C consistency, D ambiguity
 - Source: [[raw/side-letter.md#1-recitals]], [[raw/side-letter.md#5-conflict-entire-agreement]]
 - Reason: "amend" and §5.1's "together constitute the entire agreement" cannot both
@@ -61,8 +63,9 @@ Sections 2–4; those sections operate on their own terms.
 
 ---
 
-## Change 3 — §4.1 MFN over convertible notes
+## Change 3 — MFN scope
 
+- Clause: §4.1
 - Reviewer: A risk
 - Source: [[raw/side-letter.md#4-most-favored-nation]], [[raw/term-sheet.md#investment]]
 - Reason: an MFN over notes lets a bridge with a lower cap reset this Safe's cap
@@ -86,8 +89,9 @@ will not reset this Safe by operation of law.
 
 ---
 
-## Change 4 — §4.2 "additional rights"
+## Change 4 — additional rights
 
+- Clause: §4.2
 - Reviewer: A risk, D ambiguity
 - Source: [[raw/side-letter.md#4-most-favored-nation]]
 - Reason: "additional rights" has no referent and imports every term given to any
@@ -110,8 +114,9 @@ the Company wants.
 
 ---
 
-## Change 5 — §4.1 notice and confirmation (new §4.3)
+## Change 5 — notice and confirmation
 
+- Clause: §4.1, new §4.3
 - Reviewer: B missing
 - Source: [[raw/side-letter.md#4-most-favored-nation]]
 - Reason: the clause triggers automatically with no duty to tell the Company it has
@@ -133,8 +138,9 @@ entitlement is known. Without it the Company can be in breach before anyone noti
 
 ---
 
-## Change 6 — §2.1 carve-outs
+## Change 6 — carve-outs
 
+- Clause: §2.1
 - Reviewer: B missing
 - Source: [[raw/side-letter.md#2-pro-rata-rights]]
 - Reason: §2.1 covers "any subsequent issuance of Capital Stock". With no carve-out,
@@ -162,8 +168,9 @@ than leaving it to §6.4.
 
 ---
 
-## Change 7 — §2.2 Pro Rata Share and price
+## Change 7 — share and price
 
+- Clause: §2.2
 - Reviewer: B missing, D ambiguity
 - Source: [[raw/side-letter.md#2-pro-rata-rights]], [[raw/safe.md#4-no-stockholder-rights]]
 - Reason: the current fraction is measured from a date on which the Investor owns
@@ -189,8 +196,9 @@ arithmetic in the Safe.
 
 ---
 
-## Change 8 — §2.3 notice and election window
+## Change 8 — notice and election window
 
+- Clause: §2.3
 - Reviewer: B missing
 - Source: [[raw/side-letter.md#2-pro-rata-rights]]
 - Reason: "as reasonably agreed" is not a period. A right with no clock cannot be
@@ -215,8 +223,9 @@ window does not kill the right for later rounds.
 
 ---
 
-## Change 9 — §3.1 scope, confidentiality, sunset
+## Change 9 — information rights
 
+- Clause: §3.1
 - Reviewer: B missing, C consistency
 - Source: [[raw/side-letter.md#3-information-rights]], [[raw/safe.md#4-no-stockholder-rights]]
 - Reason: the covenant runs from signature with no end, no confidentiality clause,
@@ -251,8 +260,9 @@ sunset and §3.3. Do not give up both.
 
 ---
 
-## Change 10 — §6.4 survival exception
+## Change 10 — survival
 
+- Clause: §6.4
 - Reviewer: B missing, D ambiguity
 - Source: [[raw/side-letter.md#6-miscellaneous]]
 - Reason: the exception preserves "then-surviving information-rights periods, if

@@ -11,7 +11,7 @@ description: >-
 
 # Matter Room Skill
 
-Run a legal matter from a folder of sources to five checked deliverables,
+Run a legal matter from a folder of sources to six checked deliverables,
 entirely inside this agent. Based on Karpathy's LLM Wiki pattern (librarian,
 not chatbot) and Karpathy's LLM Council protocol (parallel opinions →
 anonymized peer review → chairman). No second model stack. No Node app.
