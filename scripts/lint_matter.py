@@ -3,7 +3,9 @@
 
 Forked from create-wiki's lint-wiki.py (Tamaz Sujashvili, MIT).
 Legal additions: uncited high-risk, contested without a pair, deliverable
-backlinks, citation anchors that do not exist in the cited source.
+backlinks, citation anchors that do not exist in the cited source, and the
+closing brief's own five checks (cap, sections, declared count, redline link,
+evidence label).
 """
 
 from __future__ import annotations
@@ -18,7 +20,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set
 
-__version__ = "1.0.0"
+__version__ = "1.1.0"
 
 WIKI_DIRS = ("entities", "concepts", "comparisons", "queries")
 WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]")
@@ -28,6 +30,20 @@ FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
 REQUIRED_FIELDS = ("title", "created", "updated", "type", "tags", "sources", "risk", "contested")
 LIST_ITEM_RE = re.compile(r"^\s*-\s+(.+)$")
 RAW_LINK_RE = re.compile(r"\[\[raw/")
+HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
+FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
+WIKILINK_FULL_RE = re.compile(r"\[\[([^\]|]+)(?:\|([^\]]+))?\]\]")
+DECLARED_WORDS_RE = re.compile(r"reader-facing words:\s*(\d+)")
+TOKEN_HAS_WORD_RE = re.compile(r"[A-Za-z0-9]")
+
+BRIEF_PATH = "deliverables/closing_brief.md"
+BRIEF_CAP = 350
+BRIEF_SECTIONS = (
+    "what binds today",
+    "three edits to push before signing",
+    "what counsel still needs to confirm",
+)
+EVIDENCE_LABELS = ("signed term", "express agreement", "proposal", "unresolved")
 
 
 @dataclass
@@ -168,6 +184,64 @@ def sha256_body(text: str) -> Optional[str]:
     return hashlib.sha256(body.encode("utf-8")).hexdigest()
 
 
+def reader_word_count(text: str) -> int:
+    """Words a partner reads in the closing brief.
+
+    Counts headings, prose, table cells and wikilink labels. Excludes
+    frontmatter, HTML comments, fenced code, and the [[path#anchor]] targets
+    that carry provenance rather than argument. Markdown punctuation is not a
+    word; a token needs at least one letter or digit to count.
+    """
+    body = text[FRONTMATTER_RE.match(text).end():] if FRONTMATTER_RE.match(text) else text
+    body = HTML_COMMENT_RE.sub(" ", body)
+    body = FENCED_CODE_RE.sub(" ", body)
+    body = WIKILINK_FULL_RE.sub(lambda m: f" {m.group(2)} " if m.group(2) else " ", body)
+    body = re.sub(r"[*_`|>#]", " ", body)
+    return sum(1 for token in body.split() if TOKEN_HAS_WORD_RE.search(token))
+
+
+def brief_headings(text: str) -> List[str]:
+    return [heading.strip().lower() for heading in HEADING_RE.findall(text)]
+
+
+def check_closing_brief(report: LintReport, matter: Path) -> None:
+    """Cap, section set, declared count, and the two structural links.
+
+    The brief is the first thing a partner reads, so its failure modes get
+    checked here rather than left to a reader: too long, missing a section,
+    declaring a word count the file no longer has, claiming a recommendation
+    without a redline change behind it, or arguing agreement with no label.
+    """
+    path = matter / BRIEF_PATH
+    if not path.exists():
+        return
+    text = path.read_text(encoding="utf-8")
+    words = reader_word_count(text)
+    if words > BRIEF_CAP:
+        report.add("error", "brief-length", f"{BRIEF_PATH}: {words} reader-facing words, cap {BRIEF_CAP}")
+
+    headings = brief_headings(text)
+    for section in BRIEF_SECTIONS:
+        if not any(h.startswith(section) for h in headings):
+            report.add("error", "brief-structure", f"{BRIEF_PATH}: missing section '## {section.title()}'")
+
+    declared = DECLARED_WORDS_RE.search(text)
+    if not declared:
+        report.add("warn", "brief-count", f"{BRIEF_PATH}: no declared word count (<!-- reader-facing words: N -->)")
+    elif int(declared.group(1)) != words:
+        report.add(
+            "error",
+            "brief-count",
+            f"{BRIEF_PATH}: declares {declared.group(1)} words, counts {words}",
+        )
+
+    if not re.search(r"\[\[deliverables/redline(?:#[^\]]+)?\]\]", text):
+        report.add("error", "brief-redline", f"{BRIEF_PATH}: no link to a numbered change in deliverables/redline")
+
+    if not any(label in text.lower() for label in EVIDENCE_LABELS):
+        report.add("error", "brief-unlabelled", f"{BRIEF_PATH}: no evidence label (signed term / express agreement / proposal / unresolved)")
+
+
 def lint_matter(matter: Path) -> LintReport:
     report = LintReport()
     matter = matter.resolve()
@@ -282,6 +356,8 @@ def lint_matter(matter: Path) -> LintReport:
                 basename = path.stem
                 if basename not in indexed and str(path.relative_to(matter).with_suffix("")) not in indexed:
                     report.add("warn", "deliverable-backlink", f"deliverables/{basename}.md: not listed in index.md")
+
+    check_closing_brief(report, matter)
 
     raw_base = matter / "raw"
     if raw_base.exists():

@@ -1,11 +1,12 @@
 ---
 name: matter-room
 description: >-
-  Turn a contract bundle into a matter file: evidence wiki, fact timeline,
-  evidence index, multi-reviewer council memo, and a side-letter redline.
-  Use when the user asks to review a contract, compare documents, organize a
-  matter file, draft a redline, or run a legal council in AutoClaw Legal
-  Assistant. Reverse-engineered from create-wiki + llm-council-skill.
+  Turn a contract bundle into a matter file: a one-page closing brief, evidence
+  wiki, fact timeline, evidence index, multi-reviewer council memo, and a
+  side-letter redline. Use when the user asks what binds before a signature, to
+  review a contract before close, compare documents, organize a matter file,
+  draft a redline, or run a legal council in AutoClaw Legal Assistant.
+  Reverse-engineered from create-wiki + llm-council-skill.
 ---
 
 # Matter Room Skill
@@ -26,6 +27,71 @@ The agent never marks a claim `verified`.
 - "Organize these emails and contracts into a matter file"
 - "Run Matter Room on this folder"
 - "Redline the side letter before close"
+
+## Pre-close review → the closing brief is the first result
+
+If the ask is a pre-close review — a signature is pending, a wire date is set, or
+the user asks *what binds today* or *what should I push* — the first deliverable,
+and the first link under Deliverables in `index.md`, is
+`deliverables/closing_brief.md`.
+
+Nothing else is written until it exists: no memo, no council, no timeline. Ingest
+still runs first, because the brief cites it.
+
+### Cap: 350 reader-facing words
+
+Reader-facing means what a partner reads: headings, prose, table cells, link
+labels. Frontmatter, HTML comments and `[[path#anchor]]` targets do not count.
+`scripts/lint_matter.py` counts the file and fails above 350. Do not evade the cap
+by moving text into a table, a comment, or a collapsed section — the reader still
+reads it, so the counter still counts it.
+
+### Three sections, in this order, always
+
+1. **What binds today** — executed instruments, and the carve-outs a non-binding
+   term sheet keeps binding. Nothing unsigned.
+2. **Three edits to push before signing** — exactly three, ranked. Each names the
+   clause, the source, and the change number in `deliverables/redline.md`.
+3. **What counsel still needs to confirm** — open facts and open asks. No advice,
+   no invented answer.
+
+A brief that lists five edits is a memo with a shorter title. Three is the
+decision the partner has to make on the call.
+
+### Evidence labels — at the point of use
+
+Every statement about what another party has agreed to carries one label, inline,
+next to the claim. Never in a legend the reader has to look up.
+
+| Label | Means | Test that must pass |
+|---|---|---|
+| **signed term** | Executed instrument in `raw/` | A signature page and a stamped hash |
+| **express agreement** | Unambiguous written commitment | Quote the sentence; it must say the thing |
+| **proposal** | Offered, not accepted | Draft language, "we'll consider", "happy to" |
+| **unresolved** | Nothing in the bundle decides it | Absence, a question with no reply, silence |
+
+Hard rules:
+
+- **Quote before you claim.** The quotation and its `[[raw/...#anchor]]` sit in the
+  same sentence as the label. A claim of agreement with no quotation is
+  `unresolved`, whatever the email's tone suggests.
+- **Draft language is a proposal**, even when drafted as an obligation ("the
+  Company shall deliver"). The side letter is a draft until it is signed.
+- **Silence stays unresolved.** One side asked, the other never replied: that is
+  `unresolved`, written as "no reply in the bundle" — not consent, not waiver.
+- **Read the term sheet's binding carve-outs before concluding what binds.** A
+  non-binding term sheet normally keeps confidentiality and expenses binding.
+  Name those provisions, then say what the rest of it does and does not do.
+- **Label, then recommend.** You may recommend pushing for a `proposal`. Say that
+  it is one. Do not upgrade a label to make the recommendation read cleaner.
+- **An unsigned letter changes nothing about today.** State what binds now, and
+  state separately what will bind on signature.
+
+### The redline link
+
+Every recommendation points at one numbered change in `deliverables/redline.md`,
+and that change carries the Before and After text. A recommendation with no
+redline change is an opinion.
 
 ## Matter location
 
@@ -54,7 +120,7 @@ matter/
 ├── concepts/           # L2: obligations, rights, risks
 ├── comparisons/        # L2: template vs executed, SAFE vs side letter
 ├── queries/            # L2: filed questions
-└── deliverables/       # memo, redline, timeline, evidence index, verification log
+└── deliverables/       # closing brief, memo, redline, timeline, evidence index, verification log
 ```
 
 - **L1 raw/** is immutable after ingest. Corrections live in L2 pages.
@@ -126,6 +192,10 @@ Only then proceed. This prevents duplicate pages and missed cross-references.
 6. Confirm ready and list the first sources to ingest
 
 ## Core operations
+
+Order depends on the ask. A pre-close review runs **1 → the closing brief → stop**,
+and only continues into risk rank, council and memo if the user asks for them. A
+full matter review runs 1 → 2 → 3 → 4 → 5 → 6.
 
 ### 1. Ingest
 
@@ -226,12 +296,19 @@ python3 scripts/lint_matter.py "$MATTER"
 ```
 
 Four legal checks on top of the wiki checks (broken links, orphans, index
-completeness, frontmatter, SHA drift, page size):
+completeness, frontmatter, SHA drift, page size), plus five on the closing brief:
 
 1. **uncited-high-risk** — `risk: high` with no `[[raw/...]]` in the body
 2. **contested-unpaired** — `contested: true` with fewer than two sources
 3. **deliverable-backlink** — a file in `deliverables/` missing from `index.md`
 4. **bad-anchor** — `[[raw/x.md#anchor]]` where the heading does not exist
+5. **brief-length** — more than 350 reader-facing words
+6. **brief-structure** — one of the three fixed sections is missing
+7. **brief-count** — the declared count (`<!-- reader-facing words: N -->`) no
+   longer matches the file
+8. **brief-redline** — no recommendation links to a numbered change in
+   `deliverables/redline.md`
+9. **brief-unlabelled** — no evidence label anywhere in the brief
 
 Then manually verify what the script cannot judge (contradictions, stale law,
 whether a quotation actually supports the claim built on it).
@@ -257,6 +334,7 @@ The agent never fills in `verified` by itself.
 
 | File | Done when |
 |---|---|
+| `deliverables/closing_brief.md` | First result of a pre-close review. ≤ 350 reader-facing words, three sections in the fixed order, every agreement claim labelled and quoted, each recommendation linked to one redline change. `lint_matter.py` enforces the cap, the section set and the declared count. |
 | `deliverables/research_memo.md` | Issue → what the documents say (cited) → assessment → recommended action. Opens with the live question. ≤ 4 pages. Council disagreements appear. |
 | `deliverables/redline.md` | Negotiated doc only. Every change footnoted. |
 | `deliverables/fact_timeline.md` | Dated rows, each cited. Contested dates marked. |
@@ -271,6 +349,10 @@ The agent never fills in `verified` by itself.
 - **Do not redline a market-standard form**
 - **Do not run a second LLM app for the council**
 - **Do not mark a claim verified**
+- **Do not state that a party agreed without quoting the sentence** — quote first,
+  label second, recommend third
+- **Do not treat silence, a draft, or "we'll consider" as agreement** — proposal
+  and unresolved are the honest labels and the ones that survive a partner's read
 - **Do not put client-identifying data in a public post** — if the matter is
   real, redact before any screenshot; if constructed, say so
 - **Keep pages under 200 lines**

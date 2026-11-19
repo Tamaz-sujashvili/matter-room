@@ -11,7 +11,8 @@ Constructed financing matter unless the human says otherwise.
 
 - **L1 `raw/`** — immutable sources. SHA256 in frontmatter. Never edit the body.
 - **L2** `entities/` `concepts/` `comparisons/` `queries/` — agent-owned pages.
-- **`deliverables/`** — memo, redline, timeline, evidence index, verification log.
+- **`deliverables/`** — closing brief (first on a pre-close review), memo, redline,
+  timeline, evidence index, verification log.
 
 ## Citation rule
 
@@ -35,6 +36,14 @@ sources:
 
 `contested: true` → at least two sources.
 `risk: high` → at least one `[[raw/...]]` in the body.
+
+## Evidence labels (brief and memo)
+
+`**signed term**` · `**express agreement**` · `**proposal**` · `**unresolved**`
+
+One label per agreement claim, inline, with the quotation beside it. Draft
+language and "we'll consider" are `proposal`. Silence and unanswered questions are
+`unresolved`. An unsigned instrument binds nobody.
 
 ## Tag Taxonomy
 

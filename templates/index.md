@@ -35,4 +35,9 @@ _(none yet)_
 
 ## Deliverables
 
-_(none yet)_
+- [[deliverables/closing_brief]] — first result on a pre-close review; ≤350 words
+- [[deliverables/research_memo]] — the memo, council disagreements kept
+- [[deliverables/redline]] — negotiated document only, every change footnoted
+- [[deliverables/fact_timeline]] — dated rows, contested dates marked
+- [[deliverables/evidence_index]] — one row per source, SHA256, what it contradicts
+- [[deliverables/verification_log]] — eight claims, human verdicts pending
