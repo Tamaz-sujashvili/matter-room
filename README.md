@@ -1,7 +1,10 @@
 # Matter Room
 
-Turn a contract bundle into a matter file an agent can work: evidence wiki, fact
-timeline, evidence index, four-reviewer council memo, and a side-letter redline.
+Turn a contract bundle into a matter file an agent can work: a one-page closing brief
+for the partner, evidence wiki, fact timeline, evidence index, four-reviewer council
+memo, and a side-letter redline. On a pre-close request the brief comes first, capped
+at 350 words, with every claim about what another party agreed to labelled and
+quoted — signed term, express agreement, proposal, unresolved.
 
 Built for **Built with AutoClaw — Round 3**, Legal Practice track. Reverse-engineered
 from [create-wiki](https://github.com/Tamaz-sujashvili/create-wiki) and
