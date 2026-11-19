@@ -85,6 +85,9 @@ scripts/
   stamp_sources.py    SHA256 of every raw body, into frontmatter
 examples/halden-safe/ the finished matter: raw/, entities/, concepts/,
                       comparisons/, queries/, council/, deliverables/
+docs/index.html       the public page, served by GitHub Pages
+VIDEO_BRIEF.md        what the 90-second recording has to show
+brand.md              palette, type and voice rules for the page
 ```
 
 ## Lint is the "sources were checked" artifact
