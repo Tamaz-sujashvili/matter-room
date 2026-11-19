@@ -6,7 +6,12 @@
 
 ## Change 1 — <short name>
 
-- Reviewer: A risk | B missing | C consistency | D ambiguity | chairman
+<!-- This heading is the citation anchor. 'Change 1 — precedence' cites as
+     [[deliverables/redline#change-1-precedence]]. Keep it slug-friendly and put
+     the clause number in the body, not the heading. -->
+
+- Clause: <§x.y>
+- Reviewer: A risk | B missing | C consistency | D ambiguity | chairman | pre-close pass
 - Source: [[raw/safe.md#s7-entire-agreement]]
 - Reason: <one sentence>
 

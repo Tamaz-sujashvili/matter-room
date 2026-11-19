@@ -30,6 +30,7 @@ FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---", re.DOTALL)
 REQUIRED_FIELDS = ("title", "created", "updated", "type", "tags", "sources", "risk", "contested")
 LIST_ITEM_RE = re.compile(r"^\s*-\s+(.+)$")
 RAW_LINK_RE = re.compile(r"\[\[raw/")
+ANCHOR_SOURCES = ("raw/", "deliverables/", "council/")
 HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
 WIKILINK_FULL_RE = re.compile(r"\[\[([^\]|]+)(?:\|([^\]]+))?\]\]")
@@ -320,7 +321,7 @@ def lint_matter(matter: Path) -> LintReport:
         text = pages[slug].read_text(encoding="utf-8")
         for target, anchor in ANCHOR_LINK_RE.findall(text):
             target = target.strip()
-            if not target.startswith("raw/"):
+            if not target.startswith(ANCHOR_SOURCES):
                 continue
             if target not in pages:
                 target = target[:-3] if target.endswith(".md") else target

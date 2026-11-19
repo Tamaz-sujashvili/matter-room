@@ -93,6 +93,12 @@ Every recommendation points at one numbered change in `deliverables/redline.md`,
 and that change carries the Before and After text. A recommendation with no
 redline change is an opinion.
 
+A change heading **is** the anchor, so keep it short and slug-friendly:
+`## Change 1 — precedence` cites as `[[deliverables/redline#change-1-precedence]]`.
+Put the clause number in the body, not in the heading, or the anchor acquires a
+`52` in the middle of it and stops matching. The linter checks anchors into
+`deliverables/` and `council/` as well as `raw/`.
+
 ## Matter location
 
 Resolve the matter root at session start:
@@ -301,7 +307,8 @@ completeness, frontmatter, SHA drift, page size), plus five on the closing brief
 1. **uncited-high-risk** — `risk: high` with no `[[raw/...]]` in the body
 2. **contested-unpaired** — `contested: true` with fewer than two sources
 3. **deliverable-backlink** — a file in `deliverables/` missing from `index.md`
-4. **bad-anchor** — `[[raw/x.md#anchor]]` where the heading does not exist
+4. **bad-anchor** — `[[raw/x.md#anchor]]`, `[[deliverables/y.md#anchor]]` or
+   `[[council/z.md#anchor]]` where the heading does not exist
 5. **brief-length** — more than 350 reader-facing words
 6. **brief-structure** — one of the three fixed sections is missing
 7. **brief-count** — the declared count (`<!-- reader-facing words: N -->`) no
