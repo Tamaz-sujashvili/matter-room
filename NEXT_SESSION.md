@@ -37,8 +37,11 @@ lint-clean.
    `deliverables/verification_log.md`, check each quotation, write your verdict and
    initials. Do not initial a row you have not reopened. Row 8 is the correction —
    read it twice.
-4. **Record 90 seconds.** Attach `examples/halden-safe/` → run → open the memo, the
-   redline, the lint output, the verification log. No voiceover needed.
+4. **Record 90 seconds with Recordly.** A separate AutoClaw agent runs it against a
+   fresh clone; the brief, shot list and exact commands are in `VIDEO_BRIEF.md`.
+   When the file exists, paste its URL into the `VIDEO_URL` constant at the bottom of
+   `docs/index.html` and push — the “Watch the 90 seconds” button appears only then,
+   so the page never carries a dead link.
 5. **Post the X thread.** Final copy is in `SUBMISSION.md` — the plan's §11 drafts
    overrun X's 280-character limit and will not publish as written. Follow
    `@AutoClawAIer` first, put the hashtag and the mention in post 1, and check the

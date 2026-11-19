@@ -126,6 +126,7 @@
   .btn:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
   .btn.ghost { background: transparent; color: var(--ink); border-color: var(--rule); }
   .btn.ghost:hover { border-color: var(--ink); background: transparent; color: var(--accent); }
+  .btn[hidden] { display: none; }
   .meta-line {
     font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.04em;
     color: var(--ink-soft); margin: 0; max-width: var(--measure);
@@ -291,6 +292,7 @@
       <p class="actions">
         <a class="btn" href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/research_memo.md">Read the memo</a>
         <a class="btn ghost" href="https://github.com/Tamaz-sujashvili/matter-room">View the run</a>
+        <a class="btn ghost" id="watch-link" href="#" hidden>Watch the 90 seconds</a>
       </p>
       <p class="meta-line">
         Constructed matter · 8 sources · 13 cited pages · 5 deliverables · lint clean
@@ -499,6 +501,23 @@
     </p>
   </div>
 </footer>
+
+<script>
+  /* The demo video switch.
+     Paste the Loom / YouTube / MP4 URL between the quotes and push. The button
+     stays absent until there is a real URL, so the page never shows a dead link.
+     See VIDEO_BRIEF.md for what the recording has to show. */
+  (function () {
+    var VIDEO_URL = "";
+    if (!VIDEO_URL) return;
+    var link = document.getElementById("watch-link");
+    if (!link) return;
+    link.href = VIDEO_URL;
+    link.hidden = false;
+    link.setAttribute("rel", "noopener");
+    link.setAttribute("target", "_blank");
+  })();
+</script>
 
 </body>
 </html>
