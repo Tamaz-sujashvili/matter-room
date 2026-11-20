@@ -38,11 +38,10 @@ lint-clean.
    `deliverables/verification_log.md`, check each quotation, write your verdict and
    initials. Do not initial a row you have not reopened. Row 8 is the correction —
    read it twice.
-4. **Record 90 seconds with Recordly.** A separate AutoClaw agent runs it against a
-   fresh clone; the brief, shot list and exact commands are in `VIDEO_BRIEF.md`.
-   When the file exists, paste its URL into the `VIDEO_URL` constant at the bottom of
-   `docs/index.html` and push — the “Watch the 90 seconds” button appears only then,
-   so the page never carries a dead link.
+4. ~~Record with Recordly~~ **Done.** `matter-room-demo.mp4`, 1920×1080, 67.1 s,
+   2.56 MB. Served from `docs/demo/` and embedded on both pages: a native player
+   band under the hero, caption "67 seconds", hero button links to `#watch`. The
+   `VIDEO_URL` switch is gone.
 5. **Post the X thread.** Final copy is in `SUBMISSION.md` — the plan's §11 drafts
    overrun X's 280-character limit and will not publish as written. Follow
    `@AutoClawAIer` first, put the hashtag and the mention in post 1, and check the
