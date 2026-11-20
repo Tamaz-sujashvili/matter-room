@@ -148,6 +148,29 @@
   p { max-width: var(--measure); margin: 0 0 1rem; }
   .section > p:last-child { margin-bottom: 0; }
 
+  /* ---------- the recording ---------- */
+
+  .video-band { border-top: 1px solid var(--rule); }
+  .video-frame {
+    border: 1px solid var(--rule);
+    background: var(--card);
+    line-height: 0;
+  }
+  .video-frame video {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #000;
+  }
+  .video-caption {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    margin: 0.85rem 0 0;
+  }
+  .video-caption b { color: var(--accent); font-weight: 600; }
+
   /* facts strip */
   .facts {
     list-style: none; margin: 2rem 0 0; padding: 0;
@@ -299,10 +322,22 @@
         <a class="btn" href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/closing_brief.md">Read the brief</a>
         <a class="btn ghost" href="https://github.com/Tamaz-sujashvili/matter-room/blob/main/examples/halden-safe/deliverables/research_memo.md">Read the memo</a>
         <a class="btn ghost" href="https://github.com/Tamaz-sujashvili/matter-room">View the run</a>
-        <a class="btn ghost" id="watch-link" href="#" hidden>Watch the 85 seconds</a>
+        <a class="btn ghost" href="#watch">Watch the 67 seconds</a>
       </p>
       <p class="meta-line">
         Constructed matter · 8 sources · 13 cited pages · 6 deliverables · lint clean
+      </p>
+    </section>
+
+    <section class="section video-band" id="watch">
+      <div class="video-frame">
+        <video controls preload="metadata" playsinline
+               src="demo/matter-room-demo.mp4"
+               aria-label="The Matter Room run on the Halden matter, 67 seconds"></video>
+      </div>
+      <p class="video-caption">
+        <b>67 seconds</b> · the Halden run: the counsel prompt, the closing brief,
+        the cited email, the redline
       </p>
     </section>
 
@@ -514,23 +549,6 @@
     </p>
   </div>
 </footer>
-
-<script>
-  /* The demo video switch.
-     Paste the Loom / YouTube / MP4 URL between the quotes and push. The button
-     stays absent until there is a real URL, so the page never shows a dead link.
-     See VIDEO_BRIEF.md for what the recording has to show. */
-  (function () {
-    var VIDEO_URL = "";
-    if (!VIDEO_URL) return;
-    var link = document.getElementById("watch-link");
-    if (!link) return;
-    link.href = VIDEO_URL;
-    link.hidden = false;
-    link.setAttribute("rel", "noopener");
-    link.setAttribute("target", "_blank");
-  })();
-</script>
 
 </body>
 </html>
