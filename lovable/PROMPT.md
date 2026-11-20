@@ -189,3 +189,12 @@ Mono, small, on a hairline: `Repo` · `SKILL.md` · `MIT` · `Built with AutoCla
 5. Dark mode: text is readable, hairlines visible, accent still legible.
 6. At 375px wide, nothing overflows and the fact strip stacks.
 7. Every link returns 200 (the repo links, the six file links, SKILL.md).
+
+---
+
+## Status
+
+Built and published: **https://matter-room.lovable.app** — project
+`b44074e7-b469-4456-9602-f98cdbcd42cf`, workspace `Tamazi's Lovable`
+(`bacb199e6636426abf61`), published 19 Nov 2026. The build was driven over the
+Lovable MCP server; the published page carries the same copy as `docs/index.html`.

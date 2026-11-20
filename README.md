@@ -16,9 +16,11 @@ stack.
 Open that folder and you see the whole method run end to end — 8 sources, 13 wiki
 pages, 4 reviewer seats, 6 deliverables, 0 lint issues.
 
-**Live page:** [tamaz-sujashvili.github.io/matter-room](https://tamaz-sujashvili.github.io/matter-room/)
-— the same claims as this README, each one linked to the file that supports it.
-Built to `brand.md`, served from `docs/`.
+**Live page:** [matter-room.lovable.app](https://matter-room.lovable.app) — the same
+claims as this README, each one linked to the file that supports it. Built to
+`brand.md` in Lovable from `lovable/PROMPT.md`. The GitHub Pages copy at
+[tamaz-sujashvili.github.io/matter-room](https://tamaz-sujashvili.github.io/matter-room/)
+stays up as a mirror, served from `docs/`.
 
 ## What the Halden run produced
 
